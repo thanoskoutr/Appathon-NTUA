@@ -17,7 +17,7 @@
 
 ### Τεχνολογίες που θα χρησιμοποιηθούν
 - Database:
-  - MySQL or MongoDB
+  - MySQL
 - Backend:
   - Javascript (NodeJS)
 - Frontend:
