@@ -20,7 +20,7 @@
   - Προτεινόμενες ταινίες.
 
 ### Επιπλέον βελτιώσεις/προσθήκες (αν προλάβω)
-- Σύνδεση με το API καιρού [OpenWeather](https://openweathermap.org/api) για να βρίσκει τον καιρό στην τοποθεσία του χρήστη, ώστε να προτείνει αντίστοιχη ταινία.
+- Σύνδεση με το API καιρού [OpenWeather](https://openweathermap.org/api) για να βρίσκει τον καιρό στην τοποθεσία του χρήστη μέσω [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), ώστε να προτείνει αντίστοιχη ταινία.
 - Σύνδεση με το API ταινιών [TheMovieDB](https://developers.themoviedb.org/3) για επιπλέον πληροφορίες για ταινίες.
 
 ### Τεχνολογίες που θα χρησιμοποιηθούν
