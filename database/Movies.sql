@@ -16,4 +16,5 @@ CREATE TABLE Movies (
   Language        VARCHAR(255),
   Runtime         INT(11),
   PRIMARY KEY (ID)
-);
+)
+CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

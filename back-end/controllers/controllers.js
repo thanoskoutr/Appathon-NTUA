@@ -1,5 +1,50 @@
 const queryRes = require('../models/queries.js');
 
+function getDistinctResults (data, type) {
+	// Create Object with distinct results
+	let resultsDistinct = {};
+	data.forEach(Obj => {
+		let resSplitByComma = Obj[type].split(",");
+		resSplitByComma.forEach(item => {
+			resultsDistinct[item] = true;
+		})
+	})
+
+	// Create JSON list with distinct results
+	const jsonArray = [];
+	const unsortedList = [];
+	for (itm in resultsDistinct) {
+		unsortedList.push(itm);
+	}
+	const sortedList = unsortedList.sort();
+	sortedList.forEach(item => {
+		const tmp = {};
+		tmp[type] = item;
+		jsonArray.push(tmp);
+	});
+
+	return jsonArray;
+
+}
+
+function getSortedPercResults (data, type) {
+	let resultsDistinct = [];
+	data.forEach(Obj => {
+		itemWoutPercList = Obj[type].split("%",1);
+		itemWoutPerc = itemWoutPercList[0];
+		resultsDistinct.push(parseInt(itemWoutPerc));
+	})
+	const sortedListWoutPerc = resultsDistinct.sort((a, b) => a - b);
+	const sortedList = [];
+	sortedListWoutPerc.forEach(itm => {
+		const tmp = {};
+		tmp[type] = itm+"%";
+		sortedList.push(tmp);
+	});
+
+	return sortedList;
+
+}
 
 exports.SelectAllMovies = (req, res) => {
 	queryRes.SelectAllMoviesQuery((err, data) => {
@@ -67,7 +112,8 @@ exports.SelectAllDirectors = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
+				res.json(getDistinctResults(data, "Directors"));
+				//res.json(data)
 			}
 		}
 
@@ -85,7 +131,8 @@ exports.SelectAllCountries = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
+				res.json(getDistinctResults(data, "Country"));
+				// res.json(data);
 			}
 		}
 
@@ -103,14 +150,7 @@ exports.SelectAllLanguages = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-				let lang = {};
-				data.forEach(Obj => {
-					let kek = Obj.Language.split(",");
-					kek.forEach(temp => {
-						lang[temp] = true;
-					})
-				})
-				res.json(lang);
+				res.json(getDistinctResults(data, "Language"));
 			}
 
 		}
@@ -201,7 +241,8 @@ exports.SelectAllRottenScores = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
+				res.json(getSortedPercResults(data, "Rotten_Tomatoes"));
+				// res.json(data);
 			}
 		}
 
@@ -219,7 +260,8 @@ exports.SelectAllGenres = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
+				res.json(getDistinctResults(data, "Genres"));
+				//res.json(data);
 			}
 		}
 

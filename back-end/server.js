@@ -1,8 +1,13 @@
 const express = require('express');
+const cors = require('cors');
+// const helmet = require("helmet");
 const app = express();  // Create Express App
 const port = 8000;
 
-require('dotenv').config()
+require('dotenv').config();
+
+app.use(cors());
+//app.use(helmet());
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

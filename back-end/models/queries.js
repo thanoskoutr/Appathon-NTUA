@@ -64,7 +64,7 @@ exports.SelectAllLanguagesQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Languages: ", res);
+		  // console.log("Languages: ", res);
    		result(null, res);
     	return;
   });
