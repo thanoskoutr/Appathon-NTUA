@@ -13,8 +13,13 @@ router.get('/Directors', controller.SelectAllDirectors);
 router.get('/Directors/:director', controller.SelectDirector);
 
 router.get('/platform', controller.SelectAllPlatforms);
+/* query parameters = { offset, limit, orderBy, order, title } */
 router.get('/platform/:platform', controller.SelectPlatform);
-router.get('/platform/:platform/statistics', controller.SelectPlatform);
+/* operation = { and, or } */
+router.get('/platform/:operation/:platform1/:platform2', controller.SelectPlatforms2);
+router.get('/platform/:operation/:platform1/:platform2/:platform3', controller.SelectPlatforms3);
+router.get('/platform/:operation/:platform1/:platform2/:platform3/:platform4', controller.SelectPlatforms4);
+// router.get('/platform/:operation/:platform/statistics', controller.SelectPlatform);
 
 router.get('/Country', controller.SelectAllCountries);
 router.get('/Country/:country', controller.SelectCountry);

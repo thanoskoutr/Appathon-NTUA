@@ -162,7 +162,7 @@ exports.SelectAllGenresQuery = (result) => {
 
 
 exports.SelectTitleQuery = (title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Title='${title}'`, (err, res) => {
+		connection.query(`SELECT * FROM Movies WHERE Title LIKE "%${title}%"`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -175,8 +175,8 @@ exports.SelectTitleQuery = (title, result) => {
   });
 }
 
-exports.SelectPlatformQuery = (platform, result) => {
-		connection.query(`SELECT * FROM Movies WHERE ${platform}=1 ORDER BY Year DESC`, (err, res) => {
+exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, result) => {
+		connection.query(`SELECT * FROM Movies WHERE ${platform}=1 AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -184,6 +184,48 @@ exports.SelectPlatformQuery = (platform, result) => {
 		  }
 
 		  console.log(platform, "Movies: ", res);
+   		result(null, res);
+    	return;
+  });
+}
+
+exports.SelectPlatforms2Query = (operation, platform1, platform2, offset, limit, orderBy, order, title, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+		  if (err) {
+		    console.log("error: ", err);
+		    result(err, null);
+		    return;
+		  }
+
+		  console.log(platform1, operation, platform2, "Movies: ", res);
+   		result(null, res);
+    	return;
+  });
+}
+
+exports.SelectPlatforms3Query = (operation, platform1, platform2, platform3, offset, limit, orderBy, order, title, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+		  if (err) {
+		    console.log("error: ", err);
+		    result(err, null);
+		    return;
+		  }
+
+		  console.log(platform1, operation, platform2, operation, platform3, "Movies: ", res);
+   		result(null, res);
+    	return;
+  });
+}
+
+exports.SelectPlatforms4Query = (operation, platform1, platform2, platform3, platform4, offset, limit, orderBy, order, title, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1 ${operation} ${platform4}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+		  if (err) {
+		    console.log("error: ", err);
+		    result(err, null);
+		    return;
+		  }
+
+		  console.log(platform1, operation, platform2, operation, platform3, operation, platform4, "Movies: ", res);
    		result(null, res);
     	return;
   });
