@@ -1,5 +1,7 @@
+CREATE DATABASE appathon_03116073 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE appathon_03116073;
+
 CREATE TABLE Movies (
-  Count           INT(11) NOT NULL,
   ID              INT(11) NOT NULL,
   Title           VARCHAR(255),
   Year            INT(4),
