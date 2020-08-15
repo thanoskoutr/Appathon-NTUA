@@ -4,22 +4,23 @@ const connection = require('../models/connection');
 
 const router = express.Router();
 
-router.get('/AllMovies', controller.SelectAllMovies);
-
-router.get('/Title/', controller.SelectAllTitles);
-router.get('/Title/:title', controller.SelectTitle);
-
-router.get('/Directors', controller.SelectAllDirectors);
-router.get('/Directors/:director', controller.SelectDirector);
+router.get('/TMDB/configuration', controller.TMDBConfiguration);
+router.get('/TMDB/search/movie/:title/:poster_size/', controller.TMDBSearchMovie);
 
 router.get('/platform', controller.SelectAllPlatforms);
-/* query parameters = { offset, limit, orderBy, order, title } */
+/* query parameters = { offset, limit, orderBy, order, title, director } */
 router.get('/platform/:platform', controller.SelectPlatform);
 /* operation = { and, or } */
 router.get('/platform/:operation/:platform1/:platform2', controller.SelectPlatforms2);
 router.get('/platform/:operation/:platform1/:platform2/:platform3', controller.SelectPlatforms3);
 router.get('/platform/:operation/:platform1/:platform2/:platform3/:platform4', controller.SelectPlatforms4);
 // router.get('/platform/:operation/:platform/statistics', controller.SelectPlatform);
+
+router.get('/Title/', controller.SelectAllTitles);
+router.get('/Title/:title', controller.SelectTitle);
+
+router.get('/Directors', controller.SelectAllDirectors);
+router.get('/Directors/:director', controller.SelectDirector);
 
 router.get('/Country', controller.SelectAllCountries);
 router.get('/Country/:country', controller.SelectCountry);

@@ -1,4 +1,6 @@
 const queryRes = require('../models/queries.js');
+const fetch = require('node-fetch');
+const fs = require('fs')
 
 function getDistinctResults (data, type) {
 	// Create Object with distinct results
@@ -46,22 +48,96 @@ function getSortedPercResults (data, type) {
 
 }
 
-exports.SelectAllMovies = (req, res) => {
-	queryRes.SelectAllMoviesQuery((err, data) => {
-		if (err) {
+exports.TMDBConfiguration = (req, res) => {
+	fetch(`https://api.themoviedb.org/3/configuration?api_key=${process.env.TMDB_API_KEY}`,{
+		method: 'GET',
+	})
+	.then((response) => {
+		console.log(response.status, response.statusText);
+		if (!response.ok) {
 			res.status(400).send('Bad Request');
 		}
 		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)  // converts and sends Object -> JSON
-			}
+			return response.json();
 		}
+	})
+	.then(
+		(json) => {
+			console.log(json);
+			res.json(json);
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+			res.status(400).send('No Connection');
+		});
+}
 
-	});
+exports.TMDBSearchMovie = (req, res) => {
+	const title = req.params.title;
+	const base_url = req.query.base_url;
+	const poster_size = req.params.poster_size;
+
+	fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${title}`,{
+		method: 'GET',
+	})
+	.then((response) => {
+		console.log(response.status, response.statusText);
+		if (!response.ok) {
+			res.status(400).send('Bad Request');
+		}
+		else {
+			return response.json();
+		}
+	})
+	.then(
+		(json) => {
+			const results = json.results[0];
+			const poster_path = json.results[0].poster_path;
+
+			fetch(`${base_url}${poster_size}${poster_path}`,{
+				method: 'GET',
+			})
+			.then((response) => {
+				console.log(response.status, response.statusText);
+				if (!response.ok) {
+					res.status(400).send('No Photo');
+				}
+				else {
+					return response;
+				}
+			})
+			.then(
+				(image) => {
+					// const writeStream = fs.createWriteStream(`./photos/photo_${poster_path.split("/")[1]}`);
+					const writeStream = fs.createWriteStream(`./photos/photo`);
+					image.body.pipe(writeStream);
+
+					image.body.on('end', () => {
+
+						// const readStream = fs.createReadStream(`./photos/photo_${poster_path.split("/")[1]}`);
+						const readStream = fs.createReadStream(`./photos/photo`);
+				    readStream.on('open', () => {
+				        res.set('Content-Type', 'image/jpeg');
+				        readStream.pipe(res);
+				    });
+				    readStream.on('error', () => {
+				        res.set('Content-Type', 'text/plain');
+				        res.status(404).end('Not found');
+				    });
+
+					});
+
+				})
+				.catch((error) => {
+					console.error('Error:', error);
+					res.status(400).send('No Photo');
+				});
+
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+			res.status(400).send('No Path');
+		});
 }
 
 exports.SelectAllTitles = (req, res) => {
@@ -169,7 +245,8 @@ exports.SelectAllYears = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
+				data.splice(0, 0, {Year: ''})
+				res.json(data);
 			}
 		}
 
@@ -299,6 +376,12 @@ exports.SelectPlatform = (req, res) => {
 	let orderBy = req.query.orderBy;
 	let order = req.query.order;
 	let title = req.query.title;
+	let director = req.query.director;
+	let language = req.query.language;
+	let genre = req.query.genre;
+	let year = req.query.year;
+	let country = req.query.country;
+	let age = req.query.age;
 	if (limit === undefined)
 		limit = 18446744073709551;
 	if (offset === undefined)
@@ -309,7 +392,21 @@ exports.SelectPlatform = (req, res) => {
 		order = "ASC";
 	if (title === undefined)
 		title = '';
-	queryRes.SelectPlatformQuery(platform, offset, limit, orderBy, order, title, (err, data) => {
+	if (director === undefined)
+		director = '';
+	if (language === undefined)
+		language = '';
+	if (genre === undefined)
+		genre = '';
+	if (year === undefined)
+		year = '';
+	if (country === undefined)
+		country = '';
+	if (age === undefined)
+		age = '';
+	if (age == "7" || age == "13" || age == "16" || age == "18")
+		age = age + "+";
+	queryRes.SelectPlatformQuery(platform, offset, limit, orderBy, order, title, director, language, genre, year, country, age, (err, data) => {
 		if (err) {
 			res.status(400).send('Bad Request');
 		}
@@ -338,6 +435,12 @@ exports.SelectPlatforms2 = (req, res) => {
 	let orderBy = req.query.orderBy;
 	let order = req.query.order;
 	let title = req.query.title;
+	let director = req.query.director;
+	let language = req.query.language;
+	let genre = req.query.genre;
+	let year = req.query.year;
+	let country = req.query.country;
+	let age = req.query.age;
 	if (limit === undefined)
 		limit = 18446744073709551;
 	if (offset === undefined)
@@ -348,7 +451,21 @@ exports.SelectPlatforms2 = (req, res) => {
 		order = "ASC";
 	if (title === undefined)
 		title = '';
-	queryRes.SelectPlatforms2Query(operation, platform1, platform2, offset, limit, orderBy, order, title, (err, data) => {
+	if (director === undefined)
+		director = '';
+	if (language === undefined)
+		language = '';
+	if (genre === undefined)
+		genre = '';
+	if (year === undefined)
+		year = '';
+	if (country === undefined)
+		country = '';
+	if (age === undefined)
+		age = '';
+	if (age == "7" || age == "13" || age == "16" || age == "18")
+		age = age + "+";
+	queryRes.SelectPlatforms2Query(operation, platform1, platform2, offset, limit, orderBy, order, title, director, language, genre, year, country, age, (err, data) => {
 		if (err) {
 			res.status(400).send('Bad Request');
 		}
@@ -378,6 +495,12 @@ exports.SelectPlatforms3 = (req, res) => {
 	let orderBy = req.query.orderBy;
 	let order = req.query.order;
 	let title = req.query.title;
+	let director = req.query.director;
+	let language = req.query.language;
+	let genre = req.query.genre;
+	let year = req.query.year;
+	let country = req.query.country;
+	let age = req.query.age;
 	if (limit === undefined)
 		limit = 18446744073709551;
 	if (offset === undefined)
@@ -388,7 +511,21 @@ exports.SelectPlatforms3 = (req, res) => {
 		order = "ASC";
 	if (title === undefined)
 		title = '';
-	queryRes.SelectPlatforms3Query(operation, platform1, platform2, platform3, offset, limit, orderBy, order, title, (err, data) => {
+	if (director === undefined)
+		director = '';
+	if (language === undefined)
+		language = '';
+	if (genre === undefined)
+		genre = '';
+	if (year === undefined)
+		year = '';
+	if (country === undefined)
+		country = '';
+	if (age === undefined)
+		age = '';
+	if (age == "7" || age == "13" || age == "16" || age == "18")
+		age = age + "+";
+	queryRes.SelectPlatforms3Query(operation, platform1, platform2, platform3, offset, limit, orderBy, order, title, director, language, genre, year, country, age, (err, data) => {
 		if (err) {
 			res.status(400).send('Bad Request');
 		}
@@ -419,6 +556,12 @@ exports.SelectPlatforms4 = (req, res) => {
 	let orderBy = req.query.orderBy;
 	let order = req.query.order;
 	let title = req.query.title;
+	let director = req.query.director;
+	let language = req.query.language;
+	let genre = req.query.genre;
+	let year = req.query.year;
+	let country = req.query.country;
+	let age = req.query.age;
 	if (limit === undefined)
 		limit = 18446744073709551;
 	if (offset === undefined)
@@ -429,7 +572,21 @@ exports.SelectPlatforms4 = (req, res) => {
 		order = "ASC";
 	if (title === undefined)
 		title = '';
-	queryRes.SelectPlatforms4Query(operation, platform1, platform2, platform3, platform4, offset, limit, orderBy, order, title, (err, data) => {
+	if (director === undefined)
+		director = '';
+	if (language === undefined)
+		language = '';
+	if (genre === undefined)
+		genre = '';
+	if (year === undefined)
+		year = '';
+	if (country === undefined)
+		country = '';
+	if (age === undefined)
+		age = '';
+	if (age == "7" || age == "13" || age == "16" || age == "18")
+		age = age + "+";
+	queryRes.SelectPlatforms4Query(operation, platform1, platform2, platform3, platform4, offset, limit, orderBy, order, title, director, language, genre, year, country, age, (err, data) => {
 		if (err) {
 			res.status(400).send('Bad Request');
 		}

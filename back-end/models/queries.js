@@ -1,19 +1,5 @@
 const connection = require('./connection');
 
-exports.SelectAllMoviesQuery = (result) => {
-		connection.query(`SELECT * FROM Movies`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log("All Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
 exports.SelectAllTitlesQuery = (result) => {
 		connection.query(`SELECT Title FROM Movies`, (err, res) => {
 		  if (err) {
@@ -71,7 +57,7 @@ exports.SelectAllLanguagesQuery = (result) => {
 }
 
 exports.SelectAllYearsQuery = (result) => {
-		connection.query(`SELECT DISTINCT Year FROM Movies ORDER BY Year ASC`, (err, res) => {
+		connection.query(`SELECT DISTINCT Year FROM Movies ORDER BY Year DESC`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -148,7 +134,7 @@ exports.SelectAllGenresQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Genres: ", res);
+		  // console.log("Genres: ", res);
    		result(null, res);
     	return;
   });
@@ -175,8 +161,15 @@ exports.SelectTitleQuery = (title, result) => {
   });
 }
 
-exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE ${platform}=1 AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, director, language, genre, year, country, age, result) => {
+		connection.query(`SELECT * FROM Movies WHERE ${platform}=1 AND Title LIKE "%${title}%"
+																															 AND Directors LIKE "%${director}%"
+																															 AND Language LIKE "%${language}%"
+																															 AND Genres LIKE "%${genre}%"
+																															 AND Year LIKE "%${year}%"
+																															 AND Country LIKE "%${country}%"
+																															 AND Age LIKE "%${age}%"
+																															 ORDER BY ${orderBy}='', ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -189,8 +182,15 @@ exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, r
   });
 }
 
-exports.SelectPlatforms2Query = (operation, platform1, platform2, offset, limit, orderBy, order, title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+exports.SelectPlatforms2Query = (operation, platform1, platform2, offset, limit, orderBy, order, title, director, language, genre, year, country, age, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1) AND Title LIKE "%${title}%"
+																																															AND Directors LIKE "%${director}%"
+																																															AND Language LIKE "%${language}%"
+																																															AND Genres LIKE "%${genre}%"
+																																															AND Year LIKE "%${year}%"
+																																															AND Country LIKE "%${country}%"
+																																															AND Age LIKE "%${age}%"
+																																															ORDER BY ${orderBy}='', ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -203,8 +203,16 @@ exports.SelectPlatforms2Query = (operation, platform1, platform2, offset, limit,
   });
 }
 
-exports.SelectPlatforms3Query = (operation, platform1, platform2, platform3, offset, limit, orderBy, order, title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+exports.SelectPlatforms3Query = (operation, platform1, platform2, platform3, offset, limit, orderBy, order, title, director, language, genre, year, country, age, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1)
+																													AND Title LIKE "%${title}%"
+																													AND Directors LIKE "%${director}%"
+																													AND Language LIKE "%${language}%"
+																													AND Genres LIKE "%${genre}%"
+																													AND Year LIKE "%${year}%"
+																													AND Country LIKE "%${country}%"
+																													AND Age LIKE "%${age}%"
+																													ORDER BY ${orderBy}='', ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
@@ -217,8 +225,16 @@ exports.SelectPlatforms3Query = (operation, platform1, platform2, platform3, off
   });
 }
 
-exports.SelectPlatforms4Query = (operation, platform1, platform2, platform3, platform4, offset, limit, orderBy, order, title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1 ${operation} ${platform4}=1) AND Title LIKE "%${title}%" ORDER BY ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
+exports.SelectPlatforms4Query = (operation, platform1, platform2, platform3, platform4, offset, limit, orderBy, order, title, director, language, genre, year, country, age, result) => {
+		connection.query(`SELECT * FROM Movies WHERE (${platform1}=1 ${operation} ${platform2}=1 ${operation} ${platform3}=1 ${operation} ${platform4}=1)
+																												 AND Title LIKE "%${title}%"
+																												 AND Directors LIKE "%${director}%"
+																												 AND Language LIKE "%${language}%"
+																												 AND Genres LIKE "%${genre}%"
+																												 AND Year LIKE "%${year}%"
+																												 AND Country LIKE "%${country}%"
+																												 AND Age LIKE "%${age}%"
+																												 ORDER BY ${orderBy}='', ${orderBy} ${order} LIMIT ${limit} OFFSET ${offset}`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
