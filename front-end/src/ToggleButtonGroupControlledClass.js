@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton'
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import netflix_icon from './icons/netflix_icon.jpeg';

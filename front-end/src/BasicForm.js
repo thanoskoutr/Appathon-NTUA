@@ -1,38 +1,51 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ToggleButtonGroupControlled from './ToggleButtonGroupControlledClass';
 import ShowResults from './ShowResults';
+import ScrollButton from './ScrollButton';
+import ReactLoading from 'react-loading';
 
 class BasicForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      HostnameAPI: '192.168.1.15',
-      // HostnameAPI: 'localhost',
       isLoaded: false,
       isLoadedResults: true,
       isSubmitted: false,
       platform: [],
-      Rotten_Tomatoes: [],
       Language: [],
-      Directors: [],
+      Genres: [],
+      Year: [],
+      Country: [],
+      Age: [],
       Order: [
-        {Order: 'ASC'},
-        {Order: 'DESC'}
+        {Order: 'Ascending'},
+        {Order: 'Descending'}
       ],
       OrderBy: [
         {OrderBy: 'Title'},
+        {OrderBy: 'Director'},
         {OrderBy: 'Year'},
-        {OrderBy: 'Rotten_Tomatoes'},
-        {OrderBy: 'IMDb'},
-        {OrderBy: 'Runtime'}
+        {OrderBy: 'Runtime'},
+        {OrderBy: 'IMDb Score'},
+        {OrderBy: 'Rotten Tomatoes Score'}
+      ],
+      LimitList: [
+        {Limit: 10},
+        {Limit: 20},
+        {Limit: 50},
+        {Limit: 100},
+        {Limit: 200}
       ],
       Selectedplatform: undefined,
-      SelectedRotten_Tomatoes: undefined,
-      SelectedLanguage: undefined,
-      SelectedDirectors: undefined,
+      SelectedLanguage: '',
+      SelectedGenre: '',
+      SelectedYear: '',
+      SelectedCountry: '',
+      SelectedAge: '',
       SelectedOrder: 'ASC',
       SelectedOrderBy: 'Title',
       SubmittedTitle: '',
+      SubmittedDirector: '',
       ErrorData: null,
       ErrorAPI: null,
       ResultsAPI: [],
@@ -45,6 +58,7 @@ class BasicForm extends React.Component {
     this.handlePlatformChange = this.handlePlatformChange.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
   }
 
   /* Create all selected options */
@@ -62,7 +76,7 @@ class BasicForm extends React.Component {
   }
 
   getSelectionsFromBackend(type) {
-    fetch(`http://${this.state.HostnameAPI}:8000/${type}`,{
+    fetch(`http://${this.props.HostnameAPI}:8000/${type}`,{
       method: 'GET',
     })
     .then((response) => {
@@ -102,7 +116,25 @@ class BasicForm extends React.Component {
 
   getResultsFromBackend(type, selectedType) {
 
-    fetch(`http://${this.state.HostnameAPI}:8000/${type}/${selectedType}?offset=${this.state.offset}&limit=${this.state.limit}&orderBy=${this.state.SelectedOrderBy}&order=${this.state.SelectedOrder}&title=${this.state.SubmittedTitle}`,{
+    let SelectedOrder = this.state.SelectedOrder;
+    if (this.state.SelectedOrder === "Ascending")
+      SelectedOrder = "ASC";
+    else if (this.state.SelectedOrder === "Descending")
+      SelectedOrder = "DESC";
+
+    let SelectedOrderBy = this.state.SelectedOrderBy;
+    if (this.state.SelectedOrderBy === "Director")
+      SelectedOrderBy = "Directors";
+    if (this.state.SelectedOrderBy === "IMDb Score")
+      SelectedOrderBy = "IMDb";
+    if (this.state.SelectedOrderBy === "Rotten Tomatoes Score")
+      SelectedOrderBy = "Rotten_Tomatoes";
+
+    let SelectedAge = this.state.SelectedAge;
+    if (this.state.SelectedAge === "7+" || this.state.SelectedAge === "13+" || this.state.SelectedAge === "16+" || this.state.SelectedAge === "18+")
+      SelectedAge = this.state.SelectedAge.split("+")[0];
+
+    fetch(`http://${this.props.HostnameAPI}:8000/${type}/${selectedType}?offset=${this.state.offset}&limit=${this.state.limit}&orderBy=${SelectedOrderBy}&order=${SelectedOrder}&title=${this.state.SubmittedTitle}&director=${this.state.SubmittedDirector}&language=${this.state.SelectedLanguage}&genre=${this.state.SelectedGenre}&year=${this.state.SelectedYear}&country=${this.state.SelectedCountry}&age=${SelectedAge}`,{
       method: 'GET',
     })
     /* Returns a promise containing the response */
@@ -161,10 +193,12 @@ class BasicForm extends React.Component {
 
   componentDidMount() {
 
-    this.getSelectionsFromBackend("Rotten_Tomatoes");
     this.getSelectionsFromBackend("platform");
     this.getSelectionsFromBackend("Language");
-    // this.getSelectionsFromBackend("Directors");
+    this.getSelectionsFromBackend("Genres");
+    this.getSelectionsFromBackend("Year");
+    this.getSelectionsFromBackend("Country");
+    this.getSelectionsFromBackend("Age");
 
   }
 
@@ -186,7 +220,21 @@ class BasicForm extends React.Component {
     this.setState({
       ErrorData: null,
       isSubmitted: false,
+      offset: 0,
       [name]: value,
+    });
+  }
+
+  handleChangePage(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    console.log(event.target.name);
+    this.setState({
+      ErrorData: null,
+      isSubmitted: false,
+      offset: 0,
+      [name]: parseInt(value),
     });
   }
 
@@ -212,6 +260,8 @@ class BasicForm extends React.Component {
         case 4:
           this.getResultsFromBackend("platform", `or/${Platforms[0]}/${Platforms[1]}/${Platforms[2]}/${Platforms[3]}`);
           break;
+        default:
+          console.log("Wrong number of platforms");
       }
     }
     else {
@@ -224,10 +274,8 @@ class BasicForm extends React.Component {
 
     if (!this.state.isLoaded) {
       return (
-        <div id="loading">
-          <div className="d-flex justify-content-center">
-            Loading...
-          </div>
+        <div id="loading" className="d-flex justify-content-center">
+            <ReactLoading type={"spin"} color={"black"} height={"5%"} width={"5%"} />
         </div>
       );
     }
@@ -253,48 +301,100 @@ class BasicForm extends React.Component {
               <ToggleButtonGroupControlled PlatformValue={this.state.PlatformValue} handlePlatformChange={this.handlePlatformChange}/>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="FormControlInput1">Movie Title:</label>
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Title..." name="SubmittedTitle" value={this.state.SubmittedTitle} onChange={this.handleChange} />
+            <div className="form-row">
+              <div className="form-group col-md-8">
+                <label htmlFor="FormControlInput1">Search by Movie Title:</label>
+                <input type="text" className="form-control form-control-lg" id="FormControlInput1" placeholder="Movie Title..."
+                  name="SubmittedTitle" value={this.state.SubmittedTitle} onChange={this.handleChange} />
+              </div>
+
+              <div className="form-group col-md-4">
+                <label htmlFor="FormControlInput2">Search by Director:</label>
+                <input type="text" className="form-control form-control-lg" id="FormControlInput2" placeholder="Director..."
+                  name="SubmittedDirector" value={this.state.SubmittedDirector} onChange={this.handleChange} />
+              </div>
             </div>
 
             <div className="form-row">
               <div className="form-group col-md-6">
-                <label htmlFor="FormControlSelect1">Order:</label>
-                <select className="form-control" id="exampleFormControlSelect1" name="SelectedOrder" value={this.state.SelectedOrder} onChange={this.handleChange}>
-                  {this.createSelect(this.state.Order, "Order")}
+                <label htmlFor="FormControlSelect3">Search by Language:</label>
+                <select className="form-control" id="exampleFormControlSelect3" name="SelectedLanguage" value={this.state.SelectedLanguage} onChange={this.handleChange}>
+                  <option disabled selected value> -- Select Language -- </option>
+                  {this.createSelect(this.state.Language, "Language")}
                 </select>
               </div>
               <div className="form-group col-md-6">
-                <label htmlFor="FormControlSelect2">Sort by:</label>
-                <select className="form-control" id="exampleFormControlSelect2" name="SelectedOrderBy" value={this.state.SelectedOrderBy} onChange={this.handleChange}>
-                  {this.createSelect(this.state.OrderBy, "OrderBy")}
+                <label htmlFor="FormControlSelect4">Search by Genre:</label>
+                <select className="form-control" id="exampleFormControlSelect4" name="SelectedGenre" value={this.state.SelectedGenre} onChange={this.handleChange}>
+                  <option disabled selected value> -- Select Genre -- </option>
+                  {this.createSelect(this.state.Genres, "Genres")}
                 </select>
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="FormControlSelect3">Language:</label>
-              <select className="form-control" id="exampleFormControlSelect3" name="SelectedLanguage" value={this.state.SelectedLanguage} onChange={this.handleChange}>
-                <option disabled selected value> -- Select Language -- </option>
-                {this.createSelect(this.state.Language, "Language")}
-              </select>
+
+
+            <div className="form-row">
+              <div className="form-group col-md-4">
+                <label htmlFor="FormControlSelect5">Search by Year:</label>
+                <select className="form-control" id="exampleFormControlSelect5" name="SelectedYear" value={this.state.SelectedYear} onChange={this.handleChange}>
+                  <option disabled selected value> -- Select Year -- </option>
+                  {this.createSelect(this.state.Year, "Year")}
+                </select>
+              </div>
+              <div className="form-group col-md-5">
+                  <label htmlFor="FormControlSelect6">Search by Country:</label>
+                <select className="form-control" id="exampleFormControlSelect6" name="SelectedCountry" value={this.state.SelectedCountry} onChange={this.handleChange}>
+                  <option disabled selected value> -- Select Country -- </option>
+                  {this.createSelect(this.state.Country, "Country")}
+                </select>
+              </div>
+              <div className="form-group col-md-3">
+                  <label htmlFor="FormControlSelect7">Search by Age:</label>
+                <select className="form-control" id="exampleFormControlSelect7" name="SelectedAge" value={this.state.SelectedAge} onChange={this.handleChange}>
+                  <option disabled selected value> -- Select Age -- </option>
+                  {this.createSelect(this.state.Age, "Age")}
+                </select>
+              </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="FormControlSelect4">Rotten Tomatoes Score:</label>
-              <select className="form-control" id="exampleFormControlSelect4" name="SelectedRotten_Tomatoes" value={this.state.SelectedRotten_Tomatoes} onChange={this.handleChange}>
-                <option disabled selected value> -- Select Score -- </option>
-                {this.createSelect(this.state.Rotten_Tomatoes, "Rotten_Tomatoes")}
-              </select>
+
+
+
+            <div className="form-group row justify-content-center">
+              <label className="col-auto col-form-label" htmlFor="FormControlSelect1">Order:</label>
+              <div className="col-auto">
+                <select className="form-control" id="FormControlSelect1" name="SelectedOrder" value={this.state.SelectedOrder} onChange={this.handleChange}>
+                  {this.createSelect(this.state.Order, "Order")}
+                </select>
+              </div>
+              <label className="col-auto col-form-label" htmlFor="FormControlSelect2">Sort by:</label>
+              <div className="form-group col-auto">
+                <select className="form-control" id="FormControlSelect2" name="SelectedOrderBy" value={this.state.SelectedOrderBy} onChange={this.handleChange}>
+                  {this.createSelect(this.state.OrderBy, "OrderBy")}
+                </select>
+              </div>
+              <label className="col-auto col-form-label" htmlFor="FormControlSelectLimit">Results per Page:</label>
+              <div className="form-group col-auto">
+                <select className="form-control" id="FormControlSelectLimit" name="limit" value={this.state.limit} onChange={this.handleChangePage}>
+                  {this.createSelect(this.state.LimitList, "Limit")}
+                </select>
+              </div>
             </div>
+
+
 
             <div className="form-group">
               <button type="submit" className="btn btn-dark">Submit</button>
             </div>
 
+
+
             {(this.state.isSubmitted && (this.state.ErrorData !== 'Select Inputs') && (this.state.ErrorData !== 'Cannot Connect')) ? (
               <div className="form-group">
+                <div>
+                  <p>Page: {this.state.offset / this.state.limit}</p>
+                </div>
                 <button className="btn btn-outline-secondary" onClick={this.previousPage}> Previous Page </button>
                 {(this.state.ErrorData !== 'No Data Found') ? (
                     <button className="btn btn-outline-secondary" onClick={this.nextPage}> Next Page </button>
@@ -306,9 +406,6 @@ class BasicForm extends React.Component {
 
           </form>
 
-
-
-
           <div>
             { this.state.ErrorData
             ? (
@@ -318,8 +415,17 @@ class BasicForm extends React.Component {
             )
             : (
               <div>
-                {<ShowResults isSubmitted={this.state.isSubmitted} ResultsAPI={this.state.ResultsAPI} isLoadedResults={this.state.isLoadedResults}/>}
+                <div>
+                  {<ShowResults HostnameAPI={this.props.HostnameAPI}
+                    isSubmitted={this.state.isSubmitted} ResultsAPI={this.state.ResultsAPI}
+                    isLoadedResults={this.state.isLoadedResults} base_url={this.props.base_url}
+                    poster_size={this.props.poster_size}/>}
+                </div>
+
+                <ScrollButton scrollStepInPx="250" delayInMs="16.66"/>
+
               </div>
+
             )}
           </div>
 
@@ -333,42 +439,7 @@ class BasicForm extends React.Component {
 
 export default BasicForm;
 
-/*Directors div*/
-// <div className="form-group">
-//   <label htmlFor="exampleFormControlSelect1">Name:</label>
-//   <select className="form-control" id="exampleFormControlSelect1" name="SelectedDirectors" value={this.state.SelectedDirectors} onChange={this.handleChange}>
-//     <option disabled selected value> -- Select Name -- </option>
-//     {this.createSelect(Directors, "Directors")}
-//   </select>
-// </div>
-
-/*Platform Select*/
-// <div className="form-group">
-//   <label htmlFor="exampleFormControlSelect1">Streaming Platform:</label>
-//   <select className="form-control" id="exampleFormControlSelect1" name="Selectedplatform" value={this.state.Selectedplatform} onChange={this.handleChange}>
-//     <option disabled selected value> -- Select Platform -- </option>
-//     {this.createSelect(this.state.platform, "platform")}
-//   </select>
-// </div>
-
-// <div key={shortid.generate()}>
-
-/*Card*/
-// <div>
-// {this.state.ResultsAPI.map(item => (
-// <div className="card" key={item.ID}>
-//   <h5 className="card-header">{item.Title}</h5>
-//   <div className="card-body">
-//     <h5 className="card-title">{item.Directors}</h5>
-//     <p className="card-text">{item.Genres}</p>
-//     <a href={"https://www.google.com/search?q=" + item.Title} className="btn btn-info">Find More</a>
-//   </div>
-// </div>
-// ))}
-// </div>
-
-
-/*Platforms as switch-checkoxes*/
+/* Platforms as switch-checkoxes */
 // <div className="text-left">
 //   <div className="custom-control custom-switch">
 //     <input type="checkbox" className="custom-control-input" id="customSwitch1"/>
@@ -397,22 +468,39 @@ export default BasicForm;
 // <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={prime_video_icon} alt="prime_video_icon"/></button>
 // <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={disney_icon} alt="disney_icon"/></button>
 
-/*ShowResults*/
-// <div>
-//   <div className="row">
-//     {this.state.isSubmitted && this.state.ResultsAPI.map(item => (
-//         <div className="col-sm-6" key={item.ID}>
-//           <div className="card bg-light">
-//             <h5 className="card-header">{item.Title}</h5>
-//             <div className="card-body">
-//               <p className="card-title"><b>Director:</b> {item.Directors}</p>
-//               <p className="card-text"><b>Genre:</b> {item.Genres}</p>
-//               <p className="card-text"><b>IMDb Score:</b> {item.IMDb}</p>
-//               <p className="card-text"><b>Rotten Tomatoes Score:</b> {item.Rotten_Tomatoes}</p>
-//               <a href={"https://www.google.com/search?q=" + item.Title} className="btn btn-info" target="_blank" rel="noopener noreferrer">Find More</a>
-//             </div>
-//           </div>
-//         </div>
-//     ))}
+/* Select Results per Page*/
+// <div className="form-row justify-content-center">
+//   <div className="form-group">
+//     <label className="text-secondary" htmlFor="FormControlSelectLimit">Select Results per Page:</label>
+//     <div className="col-sm-12">
+//       <select className="form-control" id="exampleFormControlSelectLimit" name="limit" value={this.state.limit} onChange={this.handleChangePage}>
+//         {this.createSelect(this.state.LimitList, "Limit")}
+//       </select>
+//     </div>
+//   </div>
+// </div>
+
+/* Order and Results/page vertical alignment */
+// <div className="form-row justify-content-center">
+//   <div className="form-group col-md-2">
+//   {/*<div className="form-group col-md-4">*/}
+//     <label htmlFor="FormControlSelect1">Order:</label>
+//     <select className="form-control" id="exampleFormControlSelect1" name="SelectedOrder" value={this.state.SelectedOrder} onChange={this.handleChange}>
+//       {this.createSelect(this.state.Order, "Order")}
+//     </select>
+//   </div>
+//   <div className="form-group col-md-2">
+//   {/*<div className="form-group col-md-4">*/}
+//     <label htmlFor="FormControlSelect2">Sort by:</label>
+//     <select className="form-control" id="exampleFormControlSelect2" name="SelectedOrderBy" value={this.state.SelectedOrderBy} onChange={this.handleChange}>
+//       {this.createSelect(this.state.OrderBy, "OrderBy")}
+//     </select>
+//   </div>
+//   <div className="form-group col-md-2">
+//   {/*<div className="form-group col-md-2">*/}
+//       <label className="" htmlFor="FormControlSelectLimit">Results per Page:</label>
+//       <select className="form-control" id="exampleFormControlSelectLimit" name="limit" value={this.state.limit} onChange={this.handleChangePage}>
+//         {this.createSelect(this.state.LimitList, "Limit")}
+//       </select>
 //   </div>
 // </div>
