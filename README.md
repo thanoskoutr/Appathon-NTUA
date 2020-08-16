@@ -50,3 +50,45 @@
 
 
 ## Οδηγίες Εγκατάστασης
+
+### Προαπαιτούμενα
+- MySQL ή MariaDB server
+- NodeJS (> v10.0)
+
+### Κατέβασμα εφαρμογής από GitHub
+Σε κάποιο φάκελο του συστήματος κάνουμε clone, και κάνουμε cd στον φάκελο της εφαρμογής:
+```
+git clone https://github.com/thanoskoutr/Appathon-NTUA.git
+cd Appathon-NTUA
+```
+### Σετάρισμα Βάσης
+
+#### Database Connection (.env)
+Στο αρχείο `.env.example`, πρέπει να εισαχθούν οι κατάλληλες τιμές για την σύνδεση με τη βάση δεδομένων, καθώς και το API Key για το TheMovieDB API. Οπότε αντικαθηστούμε τα `DB_USER`, `DB_PASS` με τα credentials του root χρήστη της βάσης.
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_NAME=appathon_03116073
+TMDB_API_KEY=
+```
+Αφού τα αλλάξουμε κατάλληλα, το αποθηκεύουμε ώς `.env`, ώστε να λειτουργήσει σωστά.
+```
+mv ./.env.example ./.env
+```
+
+ΒΡΙΣΚΩ ΤΡΟΠΟ ΝΑ ΣΤΕΙΛΩ API ΚΛΕΙΔΙ.
+
+### Εκκίνηση back-end
+Τώρα μπορεί να ξεκινήσει ο back-end server κανονικά εφόσων βγάλει και μήνυμα επιτυχής σύνδεσης με την βάση.
+```
+cd ./back-end
+npm install
+npm start
+```
+### Εκκίνηση front-end
+```
+cd ./front-end
+npm install
+yarn start
+```
