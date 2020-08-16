@@ -54,7 +54,7 @@ class GetPhotoTMDB extends React.Component {
   render() {
     return (
       <div className="card bg-light">
-      <img src={this.state.photo_url === "" ? nophoto : this.state.photo_url } className="card-img-top" alt={"Photo for: " + this.props.item.Title}/>
+      <img src={this.state.photo_url === "" ? nophoto : this.state.photo_url } className="card-img-top rounded" alt={"Photo for: " + this.props.item.Title}/>
       <div className="card-body">
         <h5 className="card-header">{this.props.item.Title}</h5>
         <p className="card-title"><b>Director:</b> {this.props.item.Directors === "" ? <small><i>No Data</i></small> : this.props.item.Directors}</p>

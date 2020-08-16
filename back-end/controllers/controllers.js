@@ -119,6 +119,12 @@ exports.TMDBSearchMovie = (req, res) => {
 			})
 			.then(
 				(image) => {
+
+					const photo_dir = './photos';
+					if (!fs.existsSync(photo_dir)) {
+						fs.mkdirSync(photo_dir);
+					}
+
 					const writeStream = fs.createWriteStream(`./photos/photo_${poster_path.split("/")[1]}`);
 					// const writeStream = fs.createWriteStream(`./movie_photo`);
 					image.body.pipe(writeStream);

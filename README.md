@@ -89,6 +89,6 @@ npm start
 ### Εκκίνηση front-end
 ```
 cd ./front-end
-npm install
+yarn install
 yarn start
 ```
