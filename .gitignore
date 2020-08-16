@@ -9,5 +9,5 @@ back-end/photos
 movie_photo
 
 # dev js files
-front-end/GetConfigurationTMDB_frontend.js
-front-end/GetPhotoTMDB_frontend.js
+front-end/src/GetConfigurationTMDB_frontend.js
+front-end/src/GetPhotoTMDB_frontend.js
