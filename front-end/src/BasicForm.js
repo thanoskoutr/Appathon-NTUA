@@ -2,6 +2,7 @@ import React from 'react';
 import ToggleButtonGroupControlled from './ToggleButtonGroupControlledClass';
 import ShowResults from './ShowResults';
 import ScrollButton from './ScrollButton';
+import ShowStats from './ShowStats';
 import ReactLoading from 'react-loading';
 
 class BasicForm extends React.Component {
@@ -51,7 +52,11 @@ class BasicForm extends React.Component {
       ResultsAPI: [],
       PlatformValue: [],
       limit: 20,
-      offset: 0
+      offset: 0,
+      ErrorDataStats: null,
+      ResultsStats: [],
+      isLoadedResultsStats: true,
+      isSubmittedStats: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -59,6 +64,7 @@ class BasicForm extends React.Component {
     this.nextPage = this.nextPage.bind(this);
     this.previousPage = this.previousPage.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleSubmitStatistics = this.handleSubmitStatistics.bind(this);
   }
 
   /* Create all selected options */
@@ -177,6 +183,50 @@ class BasicForm extends React.Component {
     });
   }
 
+  getStatisticsFromBackend() {
+
+    fetch(`http://${this.props.HostnameAPI}:8000/platform/statistics`,{
+      method: 'GET',
+    })
+    /* Returns a promise containing the response */
+    .then((response) => {
+      console.log(response.status, response.statusText);
+      // No Data
+      if (response.status === 403) {
+        this.setState({
+          ErrorDataStats: 'No Data Found',
+        });
+      }
+      else if (!response.ok) {
+        this.setState({
+          ErrorDataStats: 'Internal Error',
+        });
+      }
+      else {
+        this.setState({
+          ErrorDataStats: null,
+        });
+        return response.json();
+      }
+    })
+    .then(json => {
+      console.log(json);
+      this.setState({
+        ResultsStats: json,
+        isLoadedResultsStats: true,
+        isSubmittedStats: true
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      this.setState({
+        isLoadedResultsStats: true,
+        ErrorData: 'Cannot Connect',
+        isSubmittedStats: true
+      });
+    });
+  }
+
   nextPage () {
     this.setState({
       offset: this.state.offset + this.state.limit
@@ -208,6 +258,7 @@ class BasicForm extends React.Component {
       PlatformValue: event,
       ErrorData: null,
       isSubmitted: false,
+      isSubmittedStats: false,
       offset: 0
     });
   }
@@ -220,6 +271,7 @@ class BasicForm extends React.Component {
     this.setState({
       ErrorData: null,
       isSubmitted: false,
+      isSubmittedStats: false,
       offset: 0,
       [name]: value,
     });
@@ -233,6 +285,7 @@ class BasicForm extends React.Component {
     this.setState({
       ErrorData: null,
       isSubmitted: false,
+      isSubmittedStats: false,
       offset: 0,
       [name]: parseInt(value),
     });
@@ -244,8 +297,8 @@ class BasicForm extends React.Component {
 
     this.setState({
       isLoadedResults: false,
+      isSubmittedStats: false
     });
-
 
     const Platforms = this.state.PlatformValue;
 
@@ -267,6 +320,18 @@ class BasicForm extends React.Component {
     else {
       this.getResultsFromBackend("platform", Platforms[0]);
     }
+
+  }
+
+  handleSubmitStatistics(event) {
+    event.preventDefault();
+    console.log("event", event);
+
+    this.setState({
+      isLoadedResultsStats: false,
+    });
+
+    this.getStatisticsFromBackend();
 
   }
 
@@ -293,11 +358,11 @@ class BasicForm extends React.Component {
     else {
       return (
         <div id="BasicForm">
-          <form onSubmit={this.handleSubmit}>
+          <form id="SubmitForm" onSubmit={this.handleSubmit}>
 
             <div className="form-group">
               <label htmlFor="FormPlatformSelect"></label>
-              <h2>Streaming Platform</h2>
+              <h2>Select Streaming Platform</h2>
               <ToggleButtonGroupControlled PlatformValue={this.state.PlatformValue} handlePlatformChange={this.handlePlatformChange}/>
             </div>
 
@@ -393,7 +458,7 @@ class BasicForm extends React.Component {
             {(this.state.isSubmitted && (this.state.ErrorData !== 'Select Inputs') && (this.state.ErrorData !== 'Cannot Connect')) ? (
               <div className="form-group">
                 <div>
-                  <p>Page: {this.state.offset / this.state.limit}</p>
+                  <p>Page: {this.state.offset / this.state.limit + 1}</p>
                 </div>
                 <button className="btn btn-outline-secondary" onClick={this.previousPage}> Previous Page </button>
                 {(this.state.ErrorData !== 'No Data Found') ? (
@@ -405,6 +470,34 @@ class BasicForm extends React.Component {
             }
 
           </form>
+
+
+
+            <form id="StatsForm" onSubmit={this.handleSubmitStatistics}>
+              <div className="form-group">
+                <button type="submit" className="btn btn-info">Statistics</button>
+              </div>
+            </form>
+
+
+
+
+          <div>
+            { this.state.ErrorDataStats
+            ? (
+              <div className="alert alert-danger" role="alert">
+                { this.state.ErrorDataStats }
+              </div>
+            )
+            : (
+              <div>
+                {<ShowStats isSubmittedStats={this.state.isSubmittedStats} ResultsStats={this.state.ResultsStats}
+                  isLoadedResultsStats={this.state.isLoadedResultsStats}/>}
+              </div>
+            )}
+          </div>
+
+          
 
           <div>
             { this.state.ErrorData
