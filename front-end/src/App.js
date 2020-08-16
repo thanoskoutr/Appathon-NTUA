@@ -26,18 +26,3 @@ class App extends Component {
 }
 
 export default App;
-
-// <div className="App">
-//   <div>
-//     <div className="p-3 mb-2 bg-dark text-white">
-//       <h1 className="text-white">Movie Selector</h1>
-//     </div>
-//
-//     <p id="AppText">
-//     This is a small web app, where you can search for movies available on
-//     Streaming platforms. You can search and order the movies based on the
-//     given attributes below. You can search on multiple Streaming services
-//     by selecting more than one icon.
-//     </p>
-//   </div>
-// </div>

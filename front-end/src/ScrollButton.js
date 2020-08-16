@@ -31,5 +31,3 @@ class ScrollButton extends React.Component {
 }
 
 export default ScrollButton;
-
-// <span className='arrow-up glyphicon glyphicon-chevron-up'></span>

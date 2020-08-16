@@ -98,5 +98,6 @@ npm start
 ```
 cd ./front-end
 yarn install
-yarn start
+yarn build
+serve -s build
 ```

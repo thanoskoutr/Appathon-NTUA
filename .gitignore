@@ -7,3 +7,7 @@ back-end/node_modules
 # Photos
 back-end/photos
 movie_photo
+
+# dev js files
+front-end/GetConfigurationTMDB_frontend.js
+front-end/GetPhotoTMDB_frontend.js

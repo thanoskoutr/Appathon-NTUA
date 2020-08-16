@@ -3,12 +3,7 @@ import ReactLoading from 'react-loading';
 import {Doughnut} from 'react-chartjs-2';
 
 class ShowStats extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //   };
-  // }
-
+  
   render() {
 
     const resultsData = [];

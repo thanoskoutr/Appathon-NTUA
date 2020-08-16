@@ -497,7 +497,7 @@ class BasicForm extends React.Component {
             )}
           </div>
 
-          
+
 
           <div>
             { this.state.ErrorData
@@ -531,69 +531,3 @@ class BasicForm extends React.Component {
 }
 
 export default BasicForm;
-
-/* Platforms as switch-checkoxes */
-// <div className="text-left">
-//   <div className="custom-control custom-switch">
-//     <input type="checkbox" className="custom-control-input" id="customSwitch1"/>
-//     <label className="custom-control-label" htmlFor="customSwitch1">Netflix</label>
-//   </div>
-//
-//   <div className="custom-control custom-switch">
-//     <input type="checkbox" className="custom-control-input" id="customSwitch2" />
-//     <label className="custom-control-label" htmlFor="customSwitch2">Hulu</label>
-//   </div>
-//
-//   <div className="custom-control custom-switch">
-//     <input type="checkbox" className="custom-control-input" id="customSwitch3" />
-//     <label className="custom-control-label" htmlFor="customSwitch3">Prime Video</label>
-//   </div>
-//
-//   <div className="custom-control custom-switch">
-//     <input type="checkbox" className="custom-control-input" id="customSwitch4" />
-//     <label className="custom-control-label" htmlFor="customSwitch4">Disney+</label>
-//   </div>
-// </div>
-
-/* Image buttons separate*/
-// <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={netflix_icon} alt="netflix_icon"/></button>
-// <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={hulu_icon} alt="hulu_icon"/></button>
-// <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={prime_video_icon} alt="prime_video_icon"/></button>
-// <button type="button" className="btn btn-light btn-sm" data-toggle="button" aria-pressed="false"><img src={disney_icon} alt="disney_icon"/></button>
-
-/* Select Results per Page*/
-// <div className="form-row justify-content-center">
-//   <div className="form-group">
-//     <label className="text-secondary" htmlFor="FormControlSelectLimit">Select Results per Page:</label>
-//     <div className="col-sm-12">
-//       <select className="form-control" id="exampleFormControlSelectLimit" name="limit" value={this.state.limit} onChange={this.handleChangePage}>
-//         {this.createSelect(this.state.LimitList, "Limit")}
-//       </select>
-//     </div>
-//   </div>
-// </div>
-
-/* Order and Results/page vertical alignment */
-// <div className="form-row justify-content-center">
-//   <div className="form-group col-md-2">
-//   {/*<div className="form-group col-md-4">*/}
-//     <label htmlFor="FormControlSelect1">Order:</label>
-//     <select className="form-control" id="exampleFormControlSelect1" name="SelectedOrder" value={this.state.SelectedOrder} onChange={this.handleChange}>
-//       {this.createSelect(this.state.Order, "Order")}
-//     </select>
-//   </div>
-//   <div className="form-group col-md-2">
-//   {/*<div className="form-group col-md-4">*/}
-//     <label htmlFor="FormControlSelect2">Sort by:</label>
-//     <select className="form-control" id="exampleFormControlSelect2" name="SelectedOrderBy" value={this.state.SelectedOrderBy} onChange={this.handleChange}>
-//       {this.createSelect(this.state.OrderBy, "OrderBy")}
-//     </select>
-//   </div>
-//   <div className="form-group col-md-2">
-//   {/*<div className="form-group col-md-2">*/}
-//       <label className="" htmlFor="FormControlSelectLimit">Results per Page:</label>
-//       <select className="form-control" id="exampleFormControlSelectLimit" name="limit" value={this.state.limit} onChange={this.handleChangePage}>
-//         {this.createSelect(this.state.LimitList, "Limit")}
-//       </select>
-//   </div>
-// </div>

@@ -3,10 +3,6 @@ import ReactLoading from 'react-loading';
 import GetPhotoTMDB from './GetPhotoTMDB';
 
 class ShowResults extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = {};
-  // }
 
   render() {
 
