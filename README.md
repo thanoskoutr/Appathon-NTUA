@@ -52,7 +52,7 @@
 ## Οδηγίες Εγκατάστασης
 
 ### Προαπαιτούμενα
-- MySQL ή MariaDB server
+- MySQL ή MariaDB server (> v14.0)
 - NodeJS (> v10.0)
 
 ### Κατέβασμα εφαρμογής από GitHub
@@ -82,19 +82,19 @@ mv ./back-end/.env.example ./back-end/.env
 
 ### Αυτόματη Εκκίνηση
 ```
-chmod +x deploy.sh
 ./deploy.sh
 ```
 ADD FOR WINDOWS
 
-### Εκκίνηση back-end
+### Χειροκίνητη Εκκίνηση
+#### Εκκίνηση back-end
 Τώρα μπορεί να ξεκινήσει ο back-end server κανονικά εφόσων βγάλει και μήνυμα επιτυχής σύνδεσης με την βάση.
 ```
 cd ./back-end
 npm install
 npm start
 ```
-### Εκκίνηση front-end
+#### Εκκίνηση front-end
 ```
 cd ./front-end
 yarn install
