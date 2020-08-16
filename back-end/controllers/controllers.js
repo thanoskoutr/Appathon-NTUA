@@ -1,6 +1,7 @@
 const queryRes = require('../models/queries.js');
 const fetch = require('node-fetch');
 const fs = require('fs')
+const querystring = require('querystring');
 
 function getDistinctResults (data, type) {
 	// Create Object with distinct results
@@ -73,15 +74,20 @@ exports.TMDBConfiguration = (req, res) => {
 }
 
 exports.TMDBSearchMovie = (req, res) => {
-	const title = req.params.title;
+	const title = querystring.stringify({query: req.query.title});
 	const base_url = req.query.base_url;
-	const poster_size = req.params.poster_size;
+	const poster_size = req.query.poster_size;
 
-	fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${title}`,{
+	console.log(req.query.title);
+	console.log(title);
+
+	// fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${title}`,{
+	fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&${title}`,{
 		method: 'GET',
 	})
 	.then((response) => {
 		console.log(response.status, response.statusText);
+		console.log(`https://api.themoviedb.org/3/search/movie?api_key=&query=${title}`);
 		if (!response.ok) {
 			res.status(400).send('Bad Request');
 		}
@@ -91,6 +97,11 @@ exports.TMDBSearchMovie = (req, res) => {
 	})
 	.then(
 		(json) => {
+			// console.log(json);
+			if (json.results[0].poster_path === null || json.results[0].poster_path === undefined) {
+				res.status(400).send('No Photo');
+			}
+
 			const results = json.results[0];
 			const poster_path = json.results[0].poster_path;
 
@@ -108,14 +119,14 @@ exports.TMDBSearchMovie = (req, res) => {
 			})
 			.then(
 				(image) => {
-					// const writeStream = fs.createWriteStream(`./photos/photo_${poster_path.split("/")[1]}`);
-					const writeStream = fs.createWriteStream(`./photos/photo`);
+					const writeStream = fs.createWriteStream(`./photos/photo_${poster_path.split("/")[1]}`);
+					// const writeStream = fs.createWriteStream(`./movie_photo`);
 					image.body.pipe(writeStream);
 
 					image.body.on('end', () => {
 
-						// const readStream = fs.createReadStream(`./photos/photo_${poster_path.split("/")[1]}`);
-						const readStream = fs.createReadStream(`./photos/photo`);
+						const readStream = fs.createReadStream(`./photos/photo_${poster_path.split("/")[1]}`);
+						// const readStream = fs.createReadStream(`./movie_photo`);
 				    readStream.on('open', () => {
 				        res.set('Content-Type', 'image/jpeg');
 				        readStream.pipe(res);
@@ -349,25 +360,6 @@ exports.SelectAllGenres = (req, res) => {
 
 
 
-
-exports.SelectTitle = (req, res) => {
-	const title = req.params.title;
-	queryRes.SelectTitleQuery(title, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
 
 exports.SelectPlatform = (req, res) => {
 	const platform = req.params.platform;
@@ -603,9 +595,9 @@ exports.SelectPlatforms4 = (req, res) => {
 	});
 }
 
-exports.SelectDirector = (req, res) => {
-	const director = req.params.director;
-	queryRes.SelectDirectorQuery(director, (err, data) => {
+
+exports.SelectPlatformStatistics = (req, res) => {
+	queryRes.SelectPlatformStatisticsQuery((err, data) => {
 		if (err) {
 			res.status(400).send('Bad Request');
 		}
@@ -615,159 +607,32 @@ exports.SelectDirector = (req, res) => {
 				res.status(403).send('No Data');
 			}
 			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectCountry = (req, res) => {
-	const country = req.params.country;
-	queryRes.SelectCountryQuery(country, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectLanguage = (req, res) => {
-	const language = req.params.language;
-	queryRes.SelectLanguageQuery(language, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectYear = (req, res) => {
-	const year = req.params.year;
-	queryRes.SelectYearQuery(year, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectRuntime = (req, res) => {
-	const runtime = req.params.runtime;
-	queryRes.SelectRuntimeQuery(runtime, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectAge = (req, res) => {
-	const age = req.params.age;
-	queryRes.SelectAgeQuery(age, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectIMDbScore = (req, res) => {
-	const imdb = req.params.imdb;
-	queryRes.SelectIMDbScoreQuery(imdb, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectRottenScore = (req, res) => {
-	const rotten = req.params.rotten;
-	queryRes.SelectRottenScoreQuery(rotten, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
-			}
-		}
-
-	});
-}
-
-exports.SelectGenre = (req, res) => {
-	const genre = req.params.genre;
-	queryRes.SelectGenreQuery(genre, (err, data) => {
-		if (err) {
-			res.status(400).send('Bad Request');
-		}
-		else {
-			if (!data.length) {
-				res.statusMessage = "No Data";
-				res.status(403).send('No Data');
-			}
-			else {
-					res.json(data)
+				const total_movies = data[0][0]["COUNT(ID)"];
+				const netflix_movies = data[1][1]["COUNT(ID)"];
+				const hulu_movies = data[2][1]["COUNT(ID)"];
+				const prime_movies = data[3][1]["COUNT(ID)"];
+				const disney_movies = data[4][1]["COUNT(ID)"];
+				// console.log(data[0][0]["COUNT(ID)"], data[0][1]["COUNT(ID)"]);
+				console.log(total_movies, netflix_movies, hulu_movies, prime_movies, disney_movies);
+				res.json([
+					{
+						Platform: "Total",
+						Movies: total_movies,
+					},
+					{ Platform: "Netflix",
+						Movies: netflix_movies,
+					},
+					{ Platform: "Hulu",
+						Movies: hulu_movies,
+					},
+					{ Platform: "Prime_Video",
+						Movies: prime_movies,
+					},
+					{ Platform: "Disney",
+						Movies: disney_movies
+					}
+				]);
+				// res.json(data);
 			}
 		}
 

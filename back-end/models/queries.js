@@ -147,20 +147,6 @@ exports.SelectAllGenresQuery = (result) => {
 
 
 
-exports.SelectTitleQuery = (title, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Title LIKE "%${title}%"`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(title, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
 exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, director, language, genre, year, country, age, result) => {
 		connection.query(`SELECT * FROM Movies WHERE ${platform}=1 AND Title LIKE "%${title}%"
 																															 AND Directors LIKE "%${director}%"
@@ -247,127 +233,20 @@ exports.SelectPlatforms4Query = (operation, platform1, platform2, platform3, pla
   });
 }
 
-exports.SelectDirectorQuery = (director, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Directors='${director}' ORDER BY Year DESC`, (err, res) => {
+exports.SelectPlatformStatisticsQuery = (result) => {
+		connection.query(`SELECT COUNT(ID) FROM Movies;
+											SELECT COUNT(ID),Netflix FROM Movies GROUP BY Netflix;
+											SELECT COUNT(ID),Hulu FROM Movies GROUP BY Hulu;
+											SELECT COUNT(ID),Prime_Video FROM Movies GROUP BY Prime_Video;
+											SELECT COUNT(ID),Disney FROM Movies GROUP BY Disney;
+											`, (err, res) => {
 		  if (err) {
 		    console.log("error: ", err);
 		    result(err, null);
 		    return;
 		  }
 
-		  console.log(director, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectCountryQuery = (country, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Country='${country}' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(country, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectLanguageQuery = (language, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Language='${language}' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(language, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectYearQuery = (year, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Year=${year} ORDER BY Title ASC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(year, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectRuntimeQuery = (runtime, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Runtime=${runtime} ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(runtime, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectAgeQuery = (age, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Age='${age}' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(age, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectIMDbScoreQuery = (imdb, result) => {
-		connection.query(`SELECT * FROM Movies WHERE IMDb='${imdb}' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(imdb, "Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectRottenScoreQuery = (rotten, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Rotten_Tomatoes='${rotten}%' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(rotten, "% Movies: ", res);
-   		result(null, res);
-    	return;
-  });
-}
-
-exports.SelectGenreQuery = (genre, result) => {
-		connection.query(`SELECT * FROM Movies WHERE Genres='${genre}' ORDER BY Year DESC`, (err, res) => {
-		  if (err) {
-		    console.log("error: ", err);
-		    result(err, null);
-		    return;
-		  }
-
-		  console.log(genre, "Movies: ", res);
+		  console.log("Statistics: ", res);
    		result(null, res);
     	return;
   });
