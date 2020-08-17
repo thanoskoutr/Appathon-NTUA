@@ -85,7 +85,7 @@ exports.TMDBSearchMovie = (req, res) => {
 	.then((response) => {
 		// console.log(response.status, response.statusText);
 		if (!response.ok) {
-			res.status(400).send('Bad Request');
+			return res.status(400).send('Bad Request');
 		}
 		else {
 			return response.json();
@@ -94,8 +94,8 @@ exports.TMDBSearchMovie = (req, res) => {
 	.then(
 		(json) => {
 			// console.log(json);
-			if (json.results[0].poster_path === null || json.results[0].poster_path === undefined) {
-				res.status(400).send('No Photo');
+			if (json.results === undefined || json.results[0].poster_path === null || json.results[0].poster_path === undefined) {
+				 return res.status(400).send('No Photo');
 			}
 
 			const results = json.results[0];
@@ -107,7 +107,7 @@ exports.TMDBSearchMovie = (req, res) => {
 			.then((response) => {
 				// console.log(response.status, response.statusText);
 				if (!response.ok) {
-					res.status(400).send('No Photo');
+					return res.status(400).send('No Photo');
 				}
 				else {
 					return response;
@@ -131,11 +131,11 @@ exports.TMDBSearchMovie = (req, res) => {
 						// const readStream = fs.createReadStream(`./movie_photo`);
 				    readStream.on('open', () => {
 				        res.set('Content-Type', 'image/jpeg');
-				        readStream.pipe(res);
+				        return readStream.pipe(res);
 				    });
 				    readStream.on('error', () => {
 				        res.set('Content-Type', 'text/plain');
-				        res.status(404).end('Not found');
+				        return res.status(404).end('Not found');
 				    });
 
 					});
@@ -143,7 +143,7 @@ exports.TMDBSearchMovie = (req, res) => {
 				})
 				.catch((error) => {
 					console.error('Error:', error);
-					res.status(400).send('No Photo');
+					return res.status(400).send('No Photo');
 				});
 
 		})
