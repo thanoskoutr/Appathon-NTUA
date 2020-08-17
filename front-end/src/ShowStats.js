@@ -3,7 +3,7 @@ import ReactLoading from 'react-loading';
 import {Doughnut} from 'react-chartjs-2';
 
 class ShowStats extends React.Component {
-  
+
   render() {
 
     const resultsData = [];
@@ -12,7 +12,7 @@ class ShowStats extends React.Component {
       if (item.Platform !== "Total") {
         resultsData.push(item.Movies);
       }
-      console.log(item.Platform, item.Movies);
+      // console.log(item.Platform, item.Movies);
     });
 
     let chartData = {

@@ -15,7 +15,7 @@ class GetPhotoTMDB extends React.Component {
       method: 'GET',
     })
     .then((response) => {
-      console.log(response.status, response.statusText);
+      // console.log(response.status, response.statusText);
       if (!response.ok) {
         this.setState({
           Error: response.statusText
@@ -31,9 +31,7 @@ class GetPhotoTMDB extends React.Component {
     })
     .then(
       (image) => {
-        console.log('image = ', image);
         const outside = URL.createObjectURL(image);
-        console.log('outside = ', outside);
         this.setState({
           photo_url: outside
         });

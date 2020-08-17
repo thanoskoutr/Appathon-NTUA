@@ -19,7 +19,7 @@ class GetConfigurationTMDB extends React.Component {
       method: 'GET',
     })
     .then((response) => {
-      console.log(response.status, response.statusText);
+      // console.log(response.status, response.statusText);
       if (!response.ok) {
         this.setState({
           Error: 'TMDB API Error'

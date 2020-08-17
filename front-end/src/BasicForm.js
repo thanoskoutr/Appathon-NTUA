@@ -70,7 +70,6 @@ class BasicForm extends React.Component {
   /* Create all selected options */
   createSelect(selectedOption, selectedType) {
     const arrayOfData = selectedOption;
-    //console.log('arrayOfData = ', arrayOfData);
     return arrayOfData.map((data) =>
       <option
         key={data[selectedType]}
@@ -86,7 +85,7 @@ class BasicForm extends React.Component {
       method: 'GET',
     })
     .then((response) => {
-      console.log(response.status, response.statusText);
+      // console.log(response.status, response.statusText);
       if (!response.ok) {
         this.setState({
           ErrorAPI: 'Internal Error'
@@ -102,7 +101,7 @@ class BasicForm extends React.Component {
     })
     .then(
       (json) => {
-        console.log('json = ', json)
+        // console.log('json = ', json)
         this.setState({
           isLoaded: true,
           [type] : json
@@ -145,8 +144,7 @@ class BasicForm extends React.Component {
     })
     /* Returns a promise containing the response */
     .then((response) => {
-      console.log(selectedType);
-      console.log(response.status, response.statusText);
+      // console.log(response.status, response.statusText);
       // No Data
       if (response.status === 403) {
         this.setState({
@@ -166,7 +164,7 @@ class BasicForm extends React.Component {
       }
     })
     .then(json => {
-      console.log(json);
+      // console.log(json);
       this.setState({
         ResultsAPI: json,
         isLoadedResults: true,
@@ -190,7 +188,7 @@ class BasicForm extends React.Component {
     })
     /* Returns a promise containing the response */
     .then((response) => {
-      console.log(response.status, response.statusText);
+      // console.log(response.status, response.statusText);
       // No Data
       if (response.status === 403) {
         this.setState({
@@ -210,7 +208,7 @@ class BasicForm extends React.Component {
       }
     })
     .then(json => {
-      console.log(json);
+      // console.log(json);
       this.setState({
         ResultsStats: json,
         isLoadedResultsStats: true,
@@ -253,7 +251,6 @@ class BasicForm extends React.Component {
   }
 
   handlePlatformChange(event) {
-    console.log("event: ", event);
     this.setState({
       PlatformValue: event,
       ErrorData: null,
@@ -267,7 +264,7 @@ class BasicForm extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    console.log(event.target.name);
+    // console.log(event.target.name);
     this.setState({
       ErrorData: null,
       isSubmitted: false,
@@ -281,7 +278,7 @@ class BasicForm extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    console.log(event.target.name);
+    // console.log(event.target.name);
     this.setState({
       ErrorData: null,
       isSubmitted: false,
@@ -293,8 +290,6 @@ class BasicForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("event", event);
-
     this.setState({
       isLoadedResults: false,
       isSubmittedStats: false
@@ -325,7 +320,6 @@ class BasicForm extends React.Component {
 
   handleSubmitStatistics(event) {
     event.preventDefault();
-    console.log("event", event);
 
     this.setState({
       isLoadedResultsStats: false,
