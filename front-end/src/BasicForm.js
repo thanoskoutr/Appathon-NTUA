@@ -81,7 +81,7 @@ class BasicForm extends React.Component {
   }
 
   getSelectionsFromBackend(type) {
-    fetch(`http://${this.props.HostnameAPI}:8000/${type}`,{
+    fetch(`http://${this.props.Backend_API_Hostname}:8000/${type}`,{
       method: 'GET',
     })
     .then((response) => {
@@ -139,7 +139,7 @@ class BasicForm extends React.Component {
     if (this.state.SelectedAge === "7+" || this.state.SelectedAge === "13+" || this.state.SelectedAge === "16+" || this.state.SelectedAge === "18+")
       SelectedAge = this.state.SelectedAge.split("+")[0];
 
-    fetch(`http://${this.props.HostnameAPI}:8000/${type}/${selectedType}?offset=${this.state.offset}&limit=${this.state.limit}&orderBy=${SelectedOrderBy}&order=${SelectedOrder}&title=${this.state.SubmittedTitle}&director=${this.state.SubmittedDirector}&language=${this.state.SelectedLanguage}&genre=${this.state.SelectedGenre}&year=${this.state.SelectedYear}&country=${this.state.SelectedCountry}&age=${SelectedAge}`,{
+    fetch(`http://${this.props.Backend_API_Hostname}:8000/${type}/${selectedType}?offset=${this.state.offset}&limit=${this.state.limit}&orderBy=${SelectedOrderBy}&order=${SelectedOrder}&title=${this.state.SubmittedTitle}&director=${this.state.SubmittedDirector}&language=${this.state.SelectedLanguage}&genre=${this.state.SelectedGenre}&year=${this.state.SelectedYear}&country=${this.state.SelectedCountry}&age=${SelectedAge}`,{
       method: 'GET',
     })
     /* Returns a promise containing the response */
@@ -183,7 +183,7 @@ class BasicForm extends React.Component {
 
   getStatisticsFromBackend() {
 
-    fetch(`http://${this.props.HostnameAPI}:8000/platform/statistics`,{
+    fetch(`http://${this.props.Backend_API_Hostname}:8000/platform/statistics`,{
       method: 'GET',
     })
     /* Returns a promise containing the response */
@@ -503,7 +503,7 @@ class BasicForm extends React.Component {
             : (
               <div>
                 <div>
-                  {<ShowResults HostnameAPI={this.props.HostnameAPI}
+                  {<ShowResults Backend_API_Hostname={this.props.Backend_API_Hostname}
                     isSubmitted={this.state.isSubmitted} ResultsAPI={this.state.ResultsAPI}
                     isLoadedResults={this.state.isLoadedResults} base_url={this.props.base_url}
                     poster_size={this.props.poster_size}/>}

@@ -18,7 +18,7 @@ class ShowResults extends React.Component {
         <div className="row">
           {this.props.isSubmitted && this.props.ResultsAPI.map(item => (
               <div className="col-sm-6" key={item.ID}>
-                <GetPhotoTMDB HostnameAPI={this.props.HostnameAPI} base_url={this.props.base_url} poster_size={this.props.poster_size} item={item}/>
+                <GetPhotoTMDB Backend_API_Hostname={this.props.Backend_API_Hostname} base_url={this.props.base_url} poster_size={this.props.poster_size} item={item}/>
               </div>
           ))}
         </div>

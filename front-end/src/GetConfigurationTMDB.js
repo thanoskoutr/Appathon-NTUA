@@ -5,8 +5,8 @@ class GetConfigurationTMDB extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // HostnameAPI: '192.168.43.91',
-      HostnameAPI: 'localhost',
+      // Backend_API_Hostname: '192.168.43.91',
+      Backend_API_Hostname: 'localhost',
       Error: null,
       base_url: '',
       poster_sizes: [],
@@ -15,7 +15,7 @@ class GetConfigurationTMDB extends React.Component {
   }
 
   getConfiguration () {
-    fetch(`http://${this.state.HostnameAPI}:8000/TMDB/configuration`,{
+    fetch(`http://${this.state.Backend_API_Hostname}:8000/TMDB/configuration`,{
       method: 'GET',
     })
     .then((response) => {
@@ -55,7 +55,7 @@ class GetConfigurationTMDB extends React.Component {
 
   render() {
     return (
-      <BasicForm HostnameAPI={this.state.HostnameAPI} base_url={this.state.base_url} poster_sizes={this.state.poster_sizes} poster_size={this.state.poster_size}/>
+      <BasicForm Backend_API_Hostname={this.state.Backend_API_Hostname} base_url={this.state.base_url} poster_sizes={this.state.poster_sizes} poster_size={this.state.poster_size}/>
     );
   }
 }

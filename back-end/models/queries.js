@@ -8,7 +8,7 @@ exports.SelectAllTitlesQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Titles: ", res);
+		  // console.log("Titles: ", res);
    		result(null, res);
     	return;
   });
@@ -22,7 +22,7 @@ exports.SelectAllDirectorsQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Directors: ", res);
+		  // console.log("Directors: ", res);
    		result(null, res);
     	return;
   });
@@ -36,7 +36,7 @@ exports.SelectAllCountriesQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Countries: ", res);
+		  // console.log("Countries: ", res);
    		result(null, res);
     	return;
   });
@@ -64,7 +64,7 @@ exports.SelectAllYearsQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Years: ", res);
+		  // console.log("Years: ", res);
    		result(null, res);
     	return;
   });
@@ -78,7 +78,7 @@ exports.SelectAllRuntimesQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Runtimes: ", res);
+		  // console.log("Runtimes: ", res);
    		result(null, res);
     	return;
   });
@@ -92,7 +92,7 @@ exports.SelectAllAgesQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Ages: ", res);
+		  // console.log("Ages: ", res);
    		result(null, res);
     	return;
   });
@@ -106,7 +106,7 @@ exports.SelectAllIMDbScoresQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("IMDb Scores: ", res);
+		  // console.log("IMDb Scores: ", res);
    		result(null, res);
     	return;
   });
@@ -120,7 +120,7 @@ exports.SelectAllRottenScoresQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Rotten_Tomatoes Scores: ", res);
+		  // console.log("Rotten_Tomatoes Scores: ", res);
    		result(null, res);
     	return;
   });
@@ -162,7 +162,7 @@ exports.SelectPlatformQuery = (platform, offset, limit, orderBy, order, title, d
 		    return;
 		  }
 
-		  console.log(platform, "Movies: ", res);
+		  // console.log(platform, "Movies: ", res);
    		result(null, res);
     	return;
   });
@@ -183,7 +183,7 @@ exports.SelectPlatforms2Query = (operation, platform1, platform2, offset, limit,
 		    return;
 		  }
 
-		  console.log(platform1, operation, platform2, "Movies: ", res);
+		  // console.log(platform1, operation, platform2, "Movies: ", res);
    		result(null, res);
     	return;
   });
@@ -205,7 +205,7 @@ exports.SelectPlatforms3Query = (operation, platform1, platform2, platform3, off
 		    return;
 		  }
 
-		  console.log(platform1, operation, platform2, operation, platform3, "Movies: ", res);
+		  // console.log(platform1, operation, platform2, operation, platform3, "Movies: ", res);
    		result(null, res);
     	return;
   });
@@ -227,7 +227,7 @@ exports.SelectPlatforms4Query = (operation, platform1, platform2, platform3, pla
 		    return;
 		  }
 
-		  console.log(platform1, operation, platform2, operation, platform3, operation, platform4, "Movies: ", res);
+		  // console.log(platform1, operation, platform2, operation, platform3, operation, platform4, "Movies: ", res);
    		result(null, res);
     	return;
   });
@@ -246,7 +246,7 @@ exports.SelectPlatformStatisticsQuery = (result) => {
 		    return;
 		  }
 
-		  console.log("Statistics: ", res);
+		  // console.log("Statistics: ", res);
    		result(null, res);
     	return;
   });

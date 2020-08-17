@@ -54,7 +54,7 @@ exports.TMDBConfiguration = (req, res) => {
 		method: 'GET',
 	})
 	.then((response) => {
-		console.log(response.status, response.statusText);
+		// console.log(response.status, response.statusText);
 		if (!response.ok) {
 			res.status(400).send('Bad Request');
 		}
@@ -64,7 +64,7 @@ exports.TMDBConfiguration = (req, res) => {
 	})
 	.then(
 		(json) => {
-			console.log(json);
+			// console.log(json);
 			res.json(json);
 		})
 		.catch((error) => {
@@ -78,16 +78,12 @@ exports.TMDBSearchMovie = (req, res) => {
 	const base_url = req.query.base_url;
 	const poster_size = req.query.poster_size;
 
-	console.log(req.query.title);
-	console.log(title);
-
 	// fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&query=${title}`,{
 	fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_API_KEY}&${title}`,{
 		method: 'GET',
 	})
 	.then((response) => {
-		console.log(response.status, response.statusText);
-		console.log(`https://api.themoviedb.org/3/search/movie?api_key=&query=${title}`);
+		// console.log(response.status, response.statusText);
 		if (!response.ok) {
 			res.status(400).send('Bad Request');
 		}
@@ -109,7 +105,7 @@ exports.TMDBSearchMovie = (req, res) => {
 				method: 'GET',
 			})
 			.then((response) => {
-				console.log(response.status, response.statusText);
+				// console.log(response.status, response.statusText);
 				if (!response.ok) {
 					res.status(400).send('No Photo');
 				}
@@ -618,8 +614,7 @@ exports.SelectPlatformStatistics = (req, res) => {
 				const hulu_movies = data[2][1]["COUNT(ID)"];
 				const prime_movies = data[3][1]["COUNT(ID)"];
 				const disney_movies = data[4][1]["COUNT(ID)"];
-				// console.log(data[0][0]["COUNT(ID)"], data[0][1]["COUNT(ID)"]);
-				console.log(total_movies, netflix_movies, hulu_movies, prime_movies, disney_movies);
+				// console.log(total_movies, netflix_movies, hulu_movies, prime_movies, disney_movies);
 				res.json([
 					{
 						Platform: "Total",

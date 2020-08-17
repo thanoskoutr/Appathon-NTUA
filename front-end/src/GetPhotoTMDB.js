@@ -11,7 +11,7 @@ class GetPhotoTMDB extends React.Component {
   }
 
   getMovieDetails() {
-    fetch(`http://${this.props.HostnameAPI}:8000/TMDB/search/movie?base_url=${this.props.base_url}&title=${this.props.item.Title}&poster_size=${this.props.poster_size}`,{
+    fetch(`http://${this.props.Backend_API_Hostname}:8000/TMDB/search/movie?base_url=${this.props.base_url}&title=${this.props.item.Title}&poster_size=${this.props.poster_size}`,{
       method: 'GET',
     })
     .then((response) => {
