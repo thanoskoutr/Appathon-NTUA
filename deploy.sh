@@ -7,4 +7,4 @@ cd ..
 cd ./front-end
 yarn install
 yarn build
-serve -s build
+serve -s build -l 5000
