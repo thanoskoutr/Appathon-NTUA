@@ -93,7 +93,9 @@ mv ./back-end/.env.example ./back-end/.env
 ./deploy.sh
 ```
 **Windows:**
-ADD FOR WINDOWS
+```
+./deploy.bat
+```
 
 ### Χειροκίνητη Εκκίνηση
 #### Εκκίνηση back-end
@@ -109,5 +111,6 @@ npm start
 cd ./front-end
 yarn install
 yarn build
+npm install -g serve
 serve -s build -l 5000
 ```

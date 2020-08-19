@@ -22,6 +22,6 @@ app.use((req, res, next) => {
 });
 
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(port, () => console.log(`Appathon Movies API listening at http://localhost:${port}`))
 
 module.exports = app;
