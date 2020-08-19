@@ -88,9 +88,11 @@ mv ./back-end/.env.example ./back-end/.env
 ΒΡΙΣΚΩ ΤΡΟΠΟ ΝΑ ΣΤΕΙΛΩ API ΚΛΕΙΔΙ.
 
 ### Αυτόματη Εκκίνηση
+**Linux/MacOS:**
 ```
 ./deploy.sh
 ```
+**Windows:**
 ADD FOR WINDOWS
 
 ### Χειροκίνητη Εκκίνηση
