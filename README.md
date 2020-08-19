@@ -72,7 +72,7 @@ mysql -u root -p appathon_03116073 < ./database/appathon_dump.sql
 ```
 
 #### Database Connection (.env)
-Στο αρχείο `./back-end/.env.example`, πρέπει να εισαχθούν οι κατάλληλες τιμές για την σύνδεση με τη βάση δεδομένων, καθώς και το API Key για το TheMovieDB API. Οπότε αντικαθηστούμε τα `DB_USER`, `DB_PASS` με τα credentials του root χρήστη της βάσης:
+Ανοίγουμε το αρχείο `./back-end/.env.example`, ώστε να εισαχθούν οι κατάλληλες τιμές για την σύνδεση με τη βάση δεδομένων, καθώς και το API Key για το TheMovieDB API. Οπότε αντικαθηστούμε τα `DB_USER`, `DB_PASS` με τα credentials του root χρήστη της βάσης:
 ```
 DB_HOST=localhost
 DB_USER=root
@@ -81,11 +81,16 @@ DB_NAME=appathon_03116073
 TMDB_API_KEY=
 ```
 Αφού τα αλλάξουμε κατάλληλα, το αποθηκεύουμε ώς `.env`, ώστε να λειτουργήσει σωστά:
+**Linux/MacOS:**
 ```
 mv ./back-end/.env.example ./back-end/.env
 ```
+**Windows:**
+```
+RENAME .\back-end\.env.example .env
+```
 
-ΒΡΙΣΚΩ ΤΡΟΠΟ ΝΑ ΣΤΕΙΛΩ API ΚΛΕΙΔΙ.
+ΒΡΙΣΚΩ ΤΡΟΠΟ ΝΑ ΣΤΕΙΛΩ API ΚΛΕΙΔΙ `TMDB_API_KEY`.
 
 ### Αυτόματη Εκκίνηση
 **Linux/MacOS:**
