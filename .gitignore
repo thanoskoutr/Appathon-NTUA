@@ -15,3 +15,6 @@ movie_photo
 # dev JS files
 front-end/src/GetConfigurationTMDB_frontend.js
 front-end/src/GetPhotoTMDB_frontend.js
+
+# Instructions
+Instructions-MySQL.md
