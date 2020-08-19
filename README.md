@@ -53,7 +53,11 @@
 
 ### Προαπαιτούμενα
 - MySQL ή MariaDB server (> v14.0)
-- NodeJS (> v10.0)
+  - Εγκατάσταση για Windows από [εδώ](https://www.apachefriends.org/index.html) μέσω του XAMPP.
+  - Εγκατάσταση για Linux / Windows από τα Official Guides [εδώ](https://dev.mysql.com/doc/mysql-getting-started/en/).
+- Node.js (> v10.0)
+  - Εγκατάσταση για Windows/macOS από [εδώ](https://nodejs.org/en/download).
+  - Εγκατάσταση για Linux μέσω packet manager απο [εδώ](https://nodejs.org/en/download/package-manager/).
 
 ### Κατέβασμα εφαρμογής από GitHub
 Σε κάποιο φάκελο του συστήματος κάνουμε clone, και κάνουμε cd στον φάκελο της εφαρμογής:
@@ -91,7 +95,7 @@ TMDB_API_KEY=
 #### Αλλαγή ονόματος αρχείου
 Αφού τα αλλάξουμε κατάλληλα, το αποθηκεύουμε ώς `.env`, ώστε να λειτουργήσει σωστά:
 
-**Linux/MacOS:**
+**Linux/macOS:**
 ```
 mv ./back-end/.env.example ./back-end/.env
 ```
@@ -102,7 +106,7 @@ RENAME .\back-end\.env.example .env
 
 ### Αυτόματη Εκκίνηση
 
-**Linux/MacOS:**
+**Linux/macOS:**
 ```
 ./deploy.sh
 ```
@@ -116,7 +120,9 @@ deploy.bat
 http://localhost:5000
 ```
 
-*Το site έχει δοκιμαστεί στους browser: Mozilla Firefox, Google Chrome, Microsoft Edge.*
+### Σημειώσεις:
+- *Το site έχει δοκιμαστεί στους browser: Mozilla Firefox, Google Chrome, Microsoft Edge.*
+- *Η εφαρμογή έχει αναπτυχθεί σε Linux (Ubuntu 18.04.5), άλλα έχει δοκιμαστεί επιτυχώς και σε Windows 10, με MySQL μέσω του XAMPP και του Node.js για Windows.*
 
 ### Χειροκίνητη Εκκίνηση *(Σε περίπτωση σφάλματος αυτόματης εκκίνησης)*
 #### Εκκίνηση back-end
