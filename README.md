@@ -71,8 +71,11 @@ mysql -u root -p < ./database/Movies.sql
 mysql -u root -p appathon_03116073 < ./database/appathon_dump.sql
 ```
 
-#### Database Connection (.env)
-Ανοίγουμε το αρχείο `./back-end/.env.example`, ώστε να εισαχθούν οι κατάλληλες τιμές για την σύνδεση με τη βάση δεδομένων, καθώς και το API Key για το TheMovieDB API. Οπότε αντικαθηστούμε τα `DB_USER`, `DB_PASS` με τα credentials του root χρήστη της βάσης:
+### Environmental Variables (.env)
+Ανοίγουμε το αρχείο `./back-end/.env.example`, ώστε να εισαχθούν οι κατάλληλες τιμές στις μεταβλητές περιβάλλοντος, για την σύνδεση με τη βάση δεδομένων, καθώς και το API Key για το TheMovieDB API.
+
+#### Σύνδεση με την βάση
+Αντικαθηστούμε τα `DB_USER`, `DB_PASS` με τα credentials του root χρήστη της βάσης:
 ```
 DB_HOST=localhost
 DB_USER=root
@@ -80,8 +83,12 @@ DB_PASS=
 DB_NAME=appathon_03116073
 TMDB_API_KEY=
 ```
+#### Σύνδεση με το API του TMDB
+Για το API key του TheMovieDB, αν δεν σας παρέχω εγώ το δικό μου, τότε θα πρέπει να δημιουργηθεί ένας λογαριασμός στο [TMDB](https://www.themoviedb.org/signup), το οποίο είναι λίγο χρονοβόρο. Αλλιώς αν δεν προστεθεί κανένα κλειδί στην μεταβλητή `TMDB_API_KEY`, απλά στην εφαρμογή δεν θα εμφανίζονται οι εικόνες.
+
 Αφού τα αλλάξουμε κατάλληλα, το αποθηκεύουμε ώς `.env`, ώστε να λειτουργήσει σωστά:
 
+#### Αλλαγή ονόματος αρχείου
 **Linux/MacOS:**
 ```
 mv ./back-end/.env.example ./back-end/.env
@@ -90,8 +97,6 @@ mv ./back-end/.env.example ./back-end/.env
 ```
 RENAME .\back-end\.env.example .env
 ```
-
-ΒΡΙΣΚΩ ΤΡΟΠΟ ΝΑ ΣΤΕΙΛΩ API ΚΛΕΙΔΙ `TMDB_API_KEY`.
 
 ### Αυτόματη Εκκίνηση
 
@@ -103,6 +108,13 @@ RENAME .\back-end\.env.example .env
 ```
 deploy.bat
 ```
+
+Όταν τελειώσει τo deploy script, η εφαρμογή θα είναι διαθέσιμη στο link:
+```
+http://localhost:5000
+```
+
+*Το site έχει δοκιμαστεί στους browser: Mozilla Firefox, Google Chrome, Microsoft Edge.*
 
 ### Χειροκίνητη Εκκίνηση *(Σε περίπτωση σφάλματος αυτόματης εκκίνησης)*
 #### Εκκίνηση back-end
