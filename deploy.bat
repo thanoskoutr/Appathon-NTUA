@@ -3,8 +3,8 @@ CALL npm install
 START "" npm start
 CD ..
 CD ./front-end
-CALL yarn install
-CALL yarn build
+CALL npm install
+CALL npm run build
 CALL npm install -g serve
-serve -s build -l 5000
+npx serve -s build -l 5000
 PAUSE

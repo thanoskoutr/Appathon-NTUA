@@ -5,6 +5,6 @@ npm start &
 cd ..
 
 cd ./front-end
-yarn install
-yarn build
-serve -s build -l 5000
+npm install
+npm run build
+npx serve -s build -l 5000

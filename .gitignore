@@ -3,7 +3,7 @@ back-end/.env
 
 # Node Stuff
 back-end/node_modules
-back-end/back-end/package-lock.json
+back-end/package-lock.json
 
 # React Stuff
 front-end/package-lock.json
