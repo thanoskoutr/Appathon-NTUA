@@ -1,5 +1,7 @@
 # Appathon-NTUA 2020
 
+[English README](README.md)
+
 ## Ταινίες σε Streaming Πλατφόρμες
 
 ### Περιγραφή Θέματος
