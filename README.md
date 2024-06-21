@@ -11,7 +11,12 @@ The user can filter the results with different criteria and choose to search on 
 
 The application is based on an online database with over 16000 movies and info about them. The application also connects with the free [TheMovieDB](https://developers.themoviedb.org/3) API, in order to show a corresponding poster for each movie.
 
+![Main Screenshot](images/main.png)
+
+### Usage
+The following GIF showcases the usage of the application:
 ![Usage](images/usage.gif)
+> It might take some time to load.
 
 ### Main Features
 - Inputs:
